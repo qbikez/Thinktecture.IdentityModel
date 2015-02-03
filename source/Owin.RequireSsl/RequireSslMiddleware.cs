@@ -60,8 +60,9 @@ namespace Thinktecture.IdentityModel.Owin
             {
                 context.Response.ReasonPhrase = reason;
                 context.Response.Write(context.Response.ReasonPhrase);
+                return;
             }
-            return;
+            
 
 
             await _next(env);
