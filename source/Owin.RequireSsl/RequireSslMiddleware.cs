@@ -28,10 +28,11 @@ namespace Thinktecture.IdentityModel.Owin
             string reason = null;
             if (context.Request.Uri.Scheme != Uri.UriSchemeHttps)
             {
-                if (_options.AllowHttp) return;
-                
-                context.Response.StatusCode = 403;
-                reason = "SSL is required.";
+                if (!_options.AllowHttp)
+                {
+                    context.Response.StatusCode = 403;
+                    reason = "SSL is required.";
+                }
             }
             else if (_options.RequireClientCertificate)
             {
