@@ -25,43 +25,44 @@ namespace Thinktecture.IdentityModel.Owin
         public async Task Invoke(IDictionary<string, object> env)
         {
             var context = new OwinContext(env);
-
+            string reason = null;
             if (context.Request.Uri.Scheme != Uri.UriSchemeHttps)
             {
                 if (_options.AllowHttp) return;
                 
                 context.Response.StatusCode = 403;
-                context.Response.ReasonPhrase = "SSL is required.";
-                if (_options.WriteReasonToContent)
-                    context.Response.Write(context.Response.ReasonPhrase);
-                return;
+                reason = "SSL is required.";
             }
-
-            if (_options.RequireClientCertificate)
+            else if (_options.RequireClientCertificate)
             {
                 var cert = context.Get<X509Certificate2>("ssl.ClientCertificate");
                 if (cert == null)
                 {
                     context.Response.StatusCode = 403;
-                    context.Response.ReasonPhrase = "SSL client certificate is required.";
-
-                    if (_options.WriteReasonToContent)
-                        context.Response.Write(context.Response.ReasonPhrase);
-                    return;
+                    reason = "SSL client certificate is required.";
                 }
-
-                if (_options.RequiredCertificateIssuer != null)
+                else if (_options.RequiredCertificateIssuer != null)
                 {
-                    if (cert.IssuerName.Name != _options.RequiredCertificateIssuer)
+                    if (cert.Verify())
                     {
                         context.Response.StatusCode = 401;
-                        context.Response.ReasonPhrase = string.Format("SSL client certificate issued by a concrete issuer is required. Your issuer: {0}", cert.IssuerName.Name);
-                        if (_options.WriteReasonToContent)
-                            context.Response.Write(context.Response.ReasonPhrase);
-                        return;
+                        reason = string.Format("SSL client certificate is not valid");
+                    }
+                    else if (cert.IssuerName.Name != _options.RequiredCertificateIssuer)
+                    {
+                        context.Response.StatusCode = 401;
+                        reason = string.Format("SSL client certificate issued by a concrete issuer is required. Your issuer: {0}", cert.IssuerName.Name);
                     }
                 }
             }
+
+            if (reason != null)
+            {
+                context.Response.ReasonPhrase = reason;
+                context.Response.Write(context.Response.ReasonPhrase);
+            }
+            return;
+
 
             await _next(env);
         }
