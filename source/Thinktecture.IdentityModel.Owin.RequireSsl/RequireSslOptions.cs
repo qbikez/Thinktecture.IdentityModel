@@ -8,5 +8,6 @@ namespace Thinktecture.IdentityModel.Owin
     public class RequireSslOptions
     {
         public bool RequireClientCertificate { get; set; }
+        public bool AllowHttp { get; set; }
     }
 }
