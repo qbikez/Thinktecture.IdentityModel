@@ -42,9 +42,15 @@ namespace Thinktecture.IdentityModel.Owin
                 var cert = context.Get<X509Certificate2>("ssl.ClientCertificate");
                 if (cert == null)
                 {
-                    context.Response.StatusCode = 403;
+                    if (context.Environment.ContainsKey("ssl.ClientCertificateErrors"))
+                    {
+                        var errors = context.Environment["ssl.ClientCertificateErrors"];
+                        var loadFunc = (System.Func<System.Threading.Tasks.Task>)context.Environment["ssl.LoadClientCertAsync"];
+                        var t = loadFunc();
+                        await t;
+                    }
+                    context.Response.StatusCode = 401;
                     context.Response.ReasonPhrase = "SSL client certificate is required.";
-
                     if (_options.WriteReasonToContent)
                         context.Response.Write(context.Response.ReasonPhrase);
                     return;
