@@ -83,7 +83,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessDeniedResult.cs" />
+    <Compile Include="AsyncHelper.cs" />
+    <Compile Include="ForbiddenFilterAttribute.cs" />
     <Compile Include="HttpContextExtensions.cs" />
+    <Compile Include="ControllerExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceAuthorizeAttribute.cs" />
   </ItemGroup>
