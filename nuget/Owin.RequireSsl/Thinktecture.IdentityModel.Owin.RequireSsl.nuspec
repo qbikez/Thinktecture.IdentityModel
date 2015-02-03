@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <version>1.0.1</version>
+    <version>1.0.4</version>
     <authors>Dominick Baier, Brock Allen</authors>
     <owners>Dominick Baier, Brock Allen</owners>
     <copyright>Dominick Baier, Brock Allen 2013</copyright>
@@ -13,7 +13,7 @@
       <dependency id="Microsoft.Owin" version="2.1.0" />
     </dependencies>
     
-    <id>Thinktecture.IdentityModel.Owin.RequireSsl</id>
+    <id>Legimi.Thinktecture.IdentityModel.Owin.RequireSsl</id>
     <title>Thinktecture.IdentityModel.Owin - RequireSsl</title>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     
