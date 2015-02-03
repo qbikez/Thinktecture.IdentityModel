@@ -32,7 +32,8 @@ namespace Thinktecture.IdentityModel.Owin
                 
                 context.Response.StatusCode = 403;
                 context.Response.ReasonPhrase = "SSL is required.";
-
+                if (_options.WriteReasonToContent)
+                    context.Response.Write(context.Response.ReasonPhrase);
                 return;
             }
 
@@ -44,6 +45,8 @@ namespace Thinktecture.IdentityModel.Owin
                     context.Response.StatusCode = 403;
                     context.Response.ReasonPhrase = "SSL client certificate is required.";
 
+                    if (_options.WriteReasonToContent)
+                        context.Response.Write(context.Response.ReasonPhrase);
                     return;
                 }
             }
