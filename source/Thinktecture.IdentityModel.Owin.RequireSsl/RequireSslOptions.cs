@@ -9,6 +9,7 @@ namespace Thinktecture.IdentityModel.Owin
     {
         public bool RequireClientCertificate { get; set; }
         public bool AllowHttp { get; set; }
+        public string RequiredCertificateIssuer { get; set; }
         public bool WriteReasonToContent { get; set; }
     }
 }
