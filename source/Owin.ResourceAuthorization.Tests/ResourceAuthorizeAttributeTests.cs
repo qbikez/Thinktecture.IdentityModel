@@ -1,10 +1,8 @@
-using FluentAssertions;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using FluentAssertions;
 using Thinktecture.IdentityModel.Owin.ResourceAuthorization;
 using Thinktecture.IdentityModel.WebApi;
 using Xunit;
@@ -17,7 +15,7 @@ namespace Owin.ResourceAuthorization.Tests
         private ResourceAuthorizationContext _context;
         private readonly HttpResponseMessage _response;
 
-        public class ResourceAuthorizeAttributeTestsController : ApiController
+        public class ProtectedTestsController : ApiController
         {
             [HttpGet, Route("api/protected")]
             [ResourceAuthorize("read", "protected")]
