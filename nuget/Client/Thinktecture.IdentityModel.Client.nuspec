@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <version>3.4.1</version>
+    <version>4.0.1</version>
     <authors>Dominick Baier, Brock Allen</authors>
     <owners>Dominick Baier, Brock Allen</owners>
     <copyright>Dominick Baier, Brock Allen 2013</copyright>
@@ -19,9 +19,18 @@
     <language>en-US</language>
     <tags>OAuth2 JWT Tokens Federation API Authorization</tags>
 
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Net.Http" targetFramework="net45" />
+    </frameworkAssemblies>
+
     <dependencies>
-      <dependency id="Microsoft.Net.Http" version="2.2.28" />
-      <dependency id="Newtonsoft.Json" version="6.0.5" />
+      <group targetFramework="portable-net45+win+wpa81+wp80">
+      	<dependency id="Microsoft.Net.Http" version="2.2.28" />
+      	<dependency id="Newtonsoft.Json" version="6.0.5" />
+      </group>
+      <group targetFramework="net45">
+      	<dependency id="Newtonsoft.Json" version="6.0.5" />
+      </group>
     </dependencies>
   </metadata>
 </package>

@@ -55,6 +55,23 @@ namespace Thinktecture.IdentityModel.Owin
                         reason = string.Format("SSL client certificate issued by a concrete issuer is required. Your issuer: {0}", cert.IssuerName.Name);
                     }
                 }
+                else
+                {
+                    if (_options.ClientCertificateValidator != null)
+                    {
+                        try
+                        {
+                            _options.ClientCertificateValidator.Validate(cert);
+                        }
+                        catch (Exception ex)
+                        {
+                            context.Response.StatusCode = 403;
+                            context.Response.ReasonPhrase = ex.Message;
+
+                            return;
+                        }
+                    }
+                }
             }
 
             if (reason != null)

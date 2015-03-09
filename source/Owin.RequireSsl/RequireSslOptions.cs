@@ -3,6 +3,7 @@
  * see license.txt
  */
 
+using System.IdentityModel.Selectors;
 namespace Thinktecture.IdentityModel.Owin
 {
     public class RequireSslOptions
@@ -11,5 +12,12 @@ namespace Thinktecture.IdentityModel.Owin
         public bool AllowHttp { get; set; }
         public string RequiredCertificateIssuer { get; set; }
         public bool WriteReasonToContent { get; set; }
+        public X509CertificateValidator ClientCertificateValidator { get; set; }
+
+        public RequireSslOptions()
+        {
+            RequireClientCertificate = false;
+            ClientCertificateValidator = X509CertificateValidator.None;
+        }
     }
 }
