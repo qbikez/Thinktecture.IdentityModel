@@ -41,34 +41,22 @@ namespace Thinktecture.IdentityModel.Owin
                 {
                     context.Response.StatusCode = 403;
                     reason = "SSL client certificate is required.";
-                }
-                else if (_options.RequiredCertificateIssuer != null)
-                {
-                    if (cert.Verify())
-                    {
-                        context.Response.StatusCode = 401;
-                        reason = string.Format("SSL client certificate is not valid");
-                    }
-                    else if (cert.IssuerName.Name != _options.RequiredCertificateIssuer)
-                    {
-                        context.Response.StatusCode = 401;
-                        reason = string.Format("SSL client certificate issued by a concrete issuer is required. Your issuer: {0}", cert.IssuerName.Name);
-                    }
-                }
+                }                
                 else
                 {
-                    if (_options.ClientCertificateValidator != null)
+                    if (_options.ClientCertificateValidator != null || _options.ValidateFunc != null)
                     {
                         try
                         {
-                            _options.ClientCertificateValidator.Validate(cert);
+                            if (_options.ValidateFunc != null)
+                                _options.ValidateFunc(cert);
+                            if (_options.ClientCertificateValidator != null)
+                                _options.ClientCertificateValidator.Validate(cert);
                         }
                         catch (Exception ex)
                         {
                             context.Response.StatusCode = 403;
-                            context.Response.ReasonPhrase = ex.Message;
-
-                            return;
+                            reason = ex.Message;
                         }
                     }
                 }
@@ -76,8 +64,10 @@ namespace Thinktecture.IdentityModel.Owin
 
             if (reason != null)
             {
-                context.Response.ReasonPhrase = reason;
-                context.Response.Write(context.Response.ReasonPhrase);
+                context.Response.ReasonPhrase = reason.Replace("\r\n", " ");
+
+                if (_options.WriteReasonToContent)
+                    context.Response.Write(reason);
                 return;
             }
             
