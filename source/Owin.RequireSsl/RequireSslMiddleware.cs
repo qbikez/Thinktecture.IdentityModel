@@ -34,33 +34,32 @@ namespace Thinktecture.IdentityModel.Owin
                     reason = "SSL is required.";
                 }
             }
-            else 
+
+            var cert = context.Get<X509Certificate2>("ssl.ClientCertificate");
+            if (cert == null && _options.RequireClientCertificate)
             {
-                var cert = context.Get<X509Certificate2>("ssl.ClientCertificate");
-                if (cert == null && _options.RequireClientCertificate)
+                context.Response.StatusCode = 403;
+                reason = "SSL client certificate is required.";
+            }                
+            else
+            {
+                if (_options.ClientCertificateValidator != null || _options.ValidateFunc != null)
                 {
-                    context.Response.StatusCode = 403;
-                    reason = "SSL client certificate is required.";
-                }                
-                else
-                {
-                    if (_options.ClientCertificateValidator != null || _options.ValidateFunc != null)
+                    try
                     {
-                        try
-                        {
-                            if (_options.ValidateFunc != null)
-                                _options.ValidateFunc(cert);
-                            if (_options.ClientCertificateValidator != null)
-                                _options.ClientCertificateValidator.Validate(cert);
-                        }
-                        catch (Exception ex)
-                        {
-                            context.Response.StatusCode = 403;
-                            reason = ex.Message;
-                        }
+                        if (_options.ValidateFunc != null)
+                            _options.ValidateFunc(cert);
+                        if (_options.ClientCertificateValidator != null)
+                            _options.ClientCertificateValidator.Validate(cert);
+                    }
+                    catch (Exception ex)
+                    {
+                        context.Response.StatusCode = 403;
+                        reason = ex.Message;
                     }
                 }
             }
+            
 
             if (reason != null)
             {

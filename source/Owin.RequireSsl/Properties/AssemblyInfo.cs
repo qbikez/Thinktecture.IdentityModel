@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Thinktecture.IdentityModel.Owin.RequireSsl")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("no description")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("MyCompany")]
 [assembly: AssemblyProduct("Thinktecture.IdentityModel.Owin.RequireSsl")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
@@ -30,6 +30,7 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.*")]
-[assembly: AssemblyFileVersion("1.1.*")]
+// [assembly: AssemblyVersion("1.2.1")]
+[assembly: AssemblyVersion("1.2.1")]
+[assembly: AssemblyFileVersion("1.2.1")]
+[assembly: System.Reflection.AssemblyInformationalVersion("1.2.1-pr-003-10cc7")]
