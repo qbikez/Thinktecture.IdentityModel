@@ -34,10 +34,10 @@ namespace Thinktecture.IdentityModel.Owin
                     reason = "SSL is required.";
                 }
             }
-            else if (_options.RequireClientCertificate)
+            else 
             {
                 var cert = context.Get<X509Certificate2>("ssl.ClientCertificate");
-                if (cert == null)
+                if (cert == null && _options.RequireClientCertificate)
                 {
                     context.Response.StatusCode = 403;
                     reason = "SSL client certificate is required.";
@@ -65,6 +65,11 @@ namespace Thinktecture.IdentityModel.Owin
             if (reason != null)
             {
                 context.Response.ReasonPhrase = reason.Replace("\r\n", " ");
+                if (_options.Log != null)
+                {
+                    _options.Log(string.Format("ssl error: {0} ({1})", context.Response.StatusCode, reason));
+                }
+                
 
                 if (_options.WriteReasonToContent)
                     context.Response.Write(reason);

@@ -11,6 +11,7 @@
     <AssemblyName>Thinktecture.IdentityModel.Owin.RequireSsl</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuSpecFile>Owin.RequireSsl.nuspec</NuSpecFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,6 +55,7 @@
     <Compile Include="RequireSslOptions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Owin.RequireSsl.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

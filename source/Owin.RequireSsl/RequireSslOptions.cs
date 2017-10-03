@@ -16,6 +16,7 @@ namespace Thinktecture.IdentityModel.Owin
         public bool WriteReasonToContent { get; set; }
         public X509CertificateValidator ClientCertificateValidator { get; set; }
         public Action<X509Certificate2> ValidateFunc { get; set; }
+        public Action<string> Log { get; set; }
 
         public RequireSslOptions()
         {
