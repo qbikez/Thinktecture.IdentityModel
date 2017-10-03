@@ -36,8 +36,30 @@ namespace Thinktecture.IdentityModel.Owin
             }
 
             var cert = context.Get<X509Certificate2>("ssl.ClientCertificate");
+            if (cert == null)
+            {
+                var certHeader = context.Request.Headers["X-ARR-ClientCert"];
+                if (!String.IsNullOrEmpty(certHeader))
+                {
+                    
+                    try
+                    {
+                        byte[] clientCertBytes = Convert.FromBase64String(certHeader);
+                        cert = new X509Certificate2(clientCertBytes);
+                        _options.Log($"ssl client cert found in ARR header: {cert.SubjectName}");
+                    }
+                    catch (Exception ex)
+                    {
+                        _options.Log($"ssl error: failed to decode cert from ARR header: {ex.Message}");
+                        context.Response.StatusCode = 403;
+                        reason = ex.Message;
+                    }                  
+                }          
+            }
+
             if (cert == null && _options.RequireClientCertificate)
             {
+                _options.Log($"no client cert and no ARR header found");
                 context.Response.StatusCode = 403;
                 reason = "SSL client certificate is required.";
             }                
